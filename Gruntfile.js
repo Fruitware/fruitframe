@@ -4,12 +4,21 @@ module.exports = function(grunt) {
   // load all grunt tasks
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
+  // configurable paths
+  var fruitConfig = {
+    src: 'src',
+    mockup: 'mockup',
+    app: 'app',
+    wp_theme: 'fruitframe'
+  };
+
   // Project configuration
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    fruit: fruitConfig,
     watch: {
       stylus: {
-        files: ['src/style/{,*/}*.styl'],
+        files: ['<%= fruit.src %>/style/{,*/}*.styl'],
         tasks: ['stylus:development'],
         options: {
           nospawn: true,
@@ -17,7 +26,7 @@ module.exports = function(grunt) {
         }
       },
       coffee: {
-        files: ['src/script/{,*/}*.coffee'],
+        files: ['<%= fruit.src %>/script/{,*/}*.coffee'],
         tasks: ['coffee:development'],
         options: {
           nospawn: true,
@@ -25,7 +34,7 @@ module.exports = function(grunt) {
         }
       },
       template: {
-        files: ['src/template/{,*/}*.hbs', 'src/template/data/data.json'],
+        files: ['<%= fruit.src %>/template/{,*/}*.hbs', '<%= fruit.src %>/template/data/data.json'],
         tasks: ['template'],
         options: {
           nospawn: true,
@@ -38,10 +47,10 @@ module.exports = function(grunt) {
           livereload: true
         },
         files: [
-          'mockup/{,*/}*.html',
-          'mockup/{,*/}*.css',
-          'mockup/{,*/}*.js',
-          'mockup/{,*/}*.{png,jpg,jpeg,gif}'
+          '<%= fruit.mockup %>/{,*/}*.html',
+          '<%= fruit.mockup %>/{,*/}*.css',
+          '<%= fruit.mockup %>/{,*/}*.js',
+          '<%= fruit.mockup %>/{,*/}*.{png,jpg,jpeg,gif}'
         ],
         tasks: []
       }
@@ -54,7 +63,7 @@ module.exports = function(grunt) {
           linenos: true
         },
         files: {
-          'mockup/css/application.css': 'src/style/*.build.styl' // compile and concat into single file
+          '<%= fruit.mockup %>/css/application.css': '<%= fruit.src %>/style/*.build.styl' // compile and concat into single file
         }
       },
       production: {
@@ -62,7 +71,7 @@ module.exports = function(grunt) {
           urlfunc: 'embedurl'
         },
         files: {
-          'mockup/css/application.css': 'src/style/*.build.styl'
+          '<%= fruit.mockup %>/css/application.css': '<%= fruit.src %>/style/*.build.styl'
         }
       }
     },
@@ -74,9 +83,9 @@ module.exports = function(grunt) {
         },
         files: [{
           expand: true,
-          cwd: 'src/script',
+          cwd: '<%= fruit.src %>/script',
           src: '*.coffee',
-          dest: 'mockup/js',
+          dest: '<%= fruit.mockup %>/js',
           ext: '.js'
         }]
       },
@@ -86,24 +95,24 @@ module.exports = function(grunt) {
           join: true
         },
         files: {
-          'mockup/js/application.js': 'src/script/*.coffee' // concat then compile into single file
+          '<%= fruit.mockup %>/js/application.js': '<%= fruit.src %>/script/*.coffee' // concat then compile into single file
         }
       }
     },
     template: {
       all: {
         engine: 'handlebars',
-        cwd: 'src/template/',
-        partials: ['src/template/partials/*.hbs'],
-        data: 'src/template/data/data.json',
+        cwd: '<%= fruit.src %>/template/',
+        partials: ['<%= fruit.src %>/template/partials/*.hbs'],
+        data: '<%= fruit.src %>/template/data/data.json',
         options: {
         },
         files: [
           {
             expand: true,     // Enable dynamic expansion.
-            cwd: 'src/template/',      // Src matches are relative to this path.
+            cwd: '<%= fruit.src %>/template/',      // Src matches are relative to this path.
             src: '*.hbs', // Actual pattern(s) to match.
-            dest: 'mockup/',   // Destination path prefix.
+            dest: '<%= fruit.mockup %>/',   // Destination path prefix.
             ext: '.html'  // Dest filepaths will have this extension.
           }
         ]
@@ -111,15 +120,15 @@ module.exports = function(grunt) {
     },
     clean: {
       production: {
-        src: ['mockup/js/*.map']
+        src: ['<%= fruit.mockup %>/js/*.map']
       }
     },
     copy: {
       production: {
         files: [
-          {expand: false, src: 'mockup/css/application.css', dest: 'app/wp-content/themes/flpwindow/css/application.css'},
-          {expand: false, src: 'mockup/js/application.js', dest: 'app/wp-content/themes/flpwindow/js/application.js'},
-          {expand: true, cwd: 'mockup/img/', src: '**', dest: 'app/wp-content/themes/flpwindow/img/', filter: 'isFile'}
+          {expand: false, src: '<%= fruit.mockup %>/css/application.css', dest: 'app/wp-content/themes/<%= fruit.wp_theme %>/css/application.css'},
+          {expand: false, src: '<%= fruit.mockup %><%= fruit.mockup %>/js/application.js', dest: 'app/wp-content/themes//<%= fruit.wp_theme %>/js/application.js'},
+          {expand: true, cwd: '<%= fruit.mockup %>/img/', src: '**', dest: 'app/wp-content/themes//<%= fruit.wp_theme %>/img/', filter: 'isFile'}
         ]
       }
     }
