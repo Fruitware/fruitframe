@@ -84,7 +84,7 @@ module.exports = function(grunt) {
       development: {
         engine: 'handlebars',
         cwd: 'src/template/',
-        partials: ['partials/*.hbs'],
+        partials: ['src/template/partials/*.hbs'],
         data: 'src/template/data/data.json',
         options: {
         },
@@ -93,7 +93,7 @@ module.exports = function(grunt) {
             expand: true,     // Enable dynamic expansion.
             cwd: 'src/template/',      // Src matches are relative to this path.
             src: '*.hbs', // Actual pattern(s) to match.
-            dest: 'app/',   // Destination path prefix.
+            dest: 'mockup/',   // Destination path prefix.
             ext: '.html'  // Dest filepaths will have this extension.
           }
         ]
