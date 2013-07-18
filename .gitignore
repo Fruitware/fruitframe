@@ -1,0 +1,19 @@
+# Node packages
+node_modules
+
+# Coffee map
+*.map
+
+# Temporary files
+*.tmp
+
+# Non template images
+app/images/
+!app/images/.gitkeep
+
+# Wordpress
+app/wp-config.php
+app/wp-content/uploads/
+
+# Idea
+.idea/
