@@ -13,12 +13,22 @@ module.exports = function(grunt) {
         tasks: ['stylus:development'],
         options: {
           nospawn: true,
+          livereload: true
         }
       },
       coffee: {
         files: ['src/script/{,*/}*.coffee'],
         tasks: ['coffee:development'],
         options: {
+          nospawn: true,
+          livereload: true
+        }
+      },
+      template: {
+        files: ['src/template/{,*/}*.hbs', 'src/template/data/data.json'],
+        tasks: ['template'],
+        options: {
+          nospawn: true,
           livereload: true
         }
       },
@@ -81,7 +91,7 @@ module.exports = function(grunt) {
       }
     },
     template: {
-      development: {
+      all: {
         engine: 'handlebars',
         cwd: 'src/template/',
         partials: ['src/template/partials/*.hbs'],
